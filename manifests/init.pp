@@ -148,7 +148,7 @@ class kafka (
   }
 
   if $additional_libs != undef {
-    $jar_hash = inline_template('<%= @additional_libs.each {|key,_|  additional_libs[key]["install_dir"] = "#{@install_directory}/libs" %>')
+    $jar_hash = inline_template('<%= @additional_libs.each {|key,_|  additional_libs[key]["install_dir"] = "#{@install_directory}/libs"} %>')
     create_resources('kafka::download_jar', $jar_hash)
   
     Archive["${package_dir}/${basefilename}"] -> 
