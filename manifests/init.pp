@@ -148,7 +148,12 @@ class kafka (
   }
 
   if $additional_libs != undef {
-    $jar_hash = <%= @additional_libs.each {|key,_|  additional_libs[key]["install_dir"] = "#{@install_directory}/libs"} %>
+    $jar_string = inline_template('<%= @additional_libs.each {|key,_|  additional_libs[key]["install_dir"] = "#{@install_directory}/libs"} %>')
+    #Make string json
+    $jar_json = regsubt($jar_string, '=>', ':', 'G')
+    #Make json hash
+    $jar_hash = parsejson($jar_json)
+
     validate_hash($jar_hash)
     create_resources('kafka::download_jar', $jar_hash)
   
