@@ -20,6 +20,8 @@ class kafka::params {
   $broker_service_install = true
   $broker_service_ensure = 'running'
 
+  $additional_libs = undef
+
   $broker_jmx_opts = '-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false \
   -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=9990'
   $broker_heap_opts = '-Xmx1G -Xms1G'

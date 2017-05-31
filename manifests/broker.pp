@@ -61,6 +61,8 @@ class kafka::broker (
   $heap_opts       = $kafka::params::broker_heap_opts,
   $log4j_opts      = $kafka::params::broker_log4j_opts,
   $opts            = $kafka::params::broker_opts,
+  $additional_libs = $kafka::params::additional_libs,
+  
 ) inherits kafka::params {
 
   validate_re($::osfamily, 'RedHat|Debian\b', "${::operatingsystem} not supported")
@@ -71,6 +73,10 @@ class kafka::broker (
   validate_bool($service_install)
   validate_re($service_ensure, '^(running|stopped)$')
   validate_bool($service_restart)
+  if $additional_libs != undef {
+    validate_hash($additional_libs)
+  }
+
 
   class { '::kafka::broker::install': } ->
   class { '::kafka::broker::config': } ->

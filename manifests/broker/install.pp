@@ -15,12 +15,13 @@ class kafka::broker::install {
 
   if !defined(Class['::kafka']) {
     class { '::kafka':
-      version       => $kafka::broker::version,
-      scala_version => $kafka::broker::scala_version,
-      install_dir   => $kafka::broker::install_dir,
-      mirror_url    => $kafka::broker::mirror_url,
-      install_java  => $kafka::broker::install_java,
-      package_dir   => $kafka::broker::package_dir,
+      version         => $kafka::broker::version,
+      scala_version   => $kafka::broker::scala_version,
+      install_dir     => $kafka::broker::install_dir,
+      mirror_url      => $kafka::broker::mirror_url,
+      install_java    => $kafka::broker::install_java,
+      package_dir     => $kafka::broker::package_dir,
+      additional_libs => $kafka::broker::additional_libs, 
     }
   }
 }

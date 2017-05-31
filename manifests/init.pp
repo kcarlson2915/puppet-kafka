@@ -35,14 +35,15 @@
 #
 #
 class kafka (
-  $version        = $kafka::params::version,
-  $scala_version  = $kafka::params::scala_version,
-  $install_dir    = $kafka::params::install_dir,
-  $mirror_url     = $kafka::params::mirror_url,
-  $install_java   = $kafka::params::install_java,
-  $package_dir    = $kafka::params::package_dir,
-  $package_name   = $kafka::params::package_name,
-  $package_ensure = $kafka::params::package_ensure,
+  $version         = $kafka::params::version,
+  $scala_version   = $kafka::params::scala_version,
+  $install_dir     = $kafka::params::install_dir,
+  $mirror_url      = $kafka::params::mirror_url,
+  $install_java    = $kafka::params::install_java,
+  $package_dir     = $kafka::params::package_dir,
+  $package_name    = $kafka::params::package_name,
+  $package_ensure  = $kafka::params::package_ensure,
+  $additional_libs = $kafka::params::additional_libs,
 ) inherits kafka::params {
 
   validate_re($::osfamily, 'RedHat|Debian\b', "${::operatingsystem} not supported")
@@ -145,4 +146,14 @@ class kafka (
       ensure => $package_ensure,
     }
   }
+
+  if $additional_libs != undef {
+    $jar_hash = inline_template('<%= @additional_libs.each {|key,_|  additional_libs[key]["install_dir"] = "#{@install_directory}/libs" %>')
+    create_resources('kafka::download_jar', $jar_hash)
+  
+    Archive["${package_dir}/${basefilename}"] -> 
+    Kafka::download_jar<| |> -> 
+    File['/opt/kafka'] 
+  }
 }
+
