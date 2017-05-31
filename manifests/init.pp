@@ -152,7 +152,7 @@ class kafka (
     create_resources('kafka::download_jar', $jar_hash)
   
     Archive["${package_dir}/${basefilename}"] -> 
-    Kafka::download_jar<| |> -> 
+    Kafka::Download_jar<| |> -> 
     File['/opt/kafka'] 
   }
 }
