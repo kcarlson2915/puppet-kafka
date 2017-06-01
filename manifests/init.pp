@@ -98,6 +98,16 @@ class kafka (
     ],
   }
 
+  file { $install_directory/libs:
+    ensure  => directory,
+    owner   => 'kafka',
+    group   => 'kafka',
+    require => [
+      Group['kafka'],
+      User['kafka'],
+    ],
+  }
+
   file { '/opt/kafka':
     ensure  => link,
     target  => $install_directory,
@@ -110,6 +120,7 @@ class kafka (
     group   => 'kafka',
     require => Archive["${package_dir}/${basefilename}"],
   }
+  
 
   file { '/var/log/kafka':
     ensure  => directory,
